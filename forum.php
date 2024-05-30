@@ -1,9 +1,10 @@
 <?php
 require_once("php/view/generic_view.php");
 require_once("php/view/forum_view.php");
-require_once("php/modele/discussion_modele.php");
 require_once("php/modele/session_modele.php");
 require_once("php/sql/database.php");
+require_once("php/modele/send_message.php");
+require_once("php/modele/display_message.php");
 
 $titre_page = "FABLAB - Forum";
 
@@ -16,7 +17,7 @@ $data['menu5_actif'] = "";
 $data['menu6_actif'] = "";
 
 if (check_login()) {
-    echo html_generic($titre_page, html_forum(), "", $data);
+    echo html_generic($titre_page, html_chat(), "", $data);
 } else {
     header("Location: connexion.php");
 }

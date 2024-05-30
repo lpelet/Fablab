@@ -58,17 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   function deleteEventOnServer(eventId) {
-	// Ici, vous mettriez à jour votre serveur pour supprimer l'événement
+	// Ici, mettre à jour votre serveur pour supprimer l'événement
 	console.log('Suppression de l’événement avec l’id:', eventId);
-	// ... Votre code pour supprimer l'événement sur le serveur ...
+	// Code pour supprimer l'événement sur le serveur 
 	var eventData = {
 		id: eventId,
 		type: "delete",
 	  };
 	
-	  // Faire une requête AJAX pour mettre à jour l'événement sur le serveur
-	  // Ici, vous devez utiliser votre propre logique pour envoyer les données au serveur
-	  // Par exemple, avec jQuery :
+	  // Requête AJAX pour supprimer l'événement sur le serveur
 	  $.ajax({
 		url: 'http://163.5.143.216/reservation_api.php',
 		type: 'DELETE',

@@ -5,17 +5,8 @@ require_once("php/view/reservation_view.php");
 require_once("php/modele/reservations_modele.php");
 require_once("php/modele/session_modele.php");// Ajouter
 
-//$db = fablab;
+
 open_database();
-
-//if($_SERVER["REQUEST_METHOD"] == "POST") {
-    //Récupérer et échapper les données
-//    $date = real_escape_string($_POST['date']);
-//    $equipements = real_escape_string($_POST['nom']);
-
-    //Préparer et exécuter la requête d'insertion
-//    $sql = "INSERT INTO Equipements ('date', nom) VALUES ('$nom', '$nom')";
-//}
 
 $titre_page = "FABLAB - Réservation";
 

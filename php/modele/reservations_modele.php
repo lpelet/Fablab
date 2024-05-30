@@ -22,7 +22,7 @@ define("SQL_RESERVATIONS_ADD", "
 ");
 
 define("SQL_RESERVATIONS_DELETE", "
-    DELETE Reservations
+    DELETE FROM Reservations
     WHERE ID_Reservation = :id_reservation;
 ");
 

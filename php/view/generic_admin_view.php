@@ -5,8 +5,8 @@ require_once ("php/modele/session_modele.php");
 function html_generic_admin($title, $contenu, $data = [])
 {
     if ( !isset($data['menu1_actif']) && !isset($data['menu2_actif']) && !isset($data['menu3_actif']) ) {
-        $data['menu1_actif'] = " active";
-        $data['menu2_actif'] = "";
+        $data['menu1_actif'] = "";
+        $data['menu2_actif'] = "active";
         $data['menu3_actif'] = "";
     }  
     $menu1_actif = $data['menu1_actif'];
@@ -80,7 +80,7 @@ function html_generic_admin($title, $contenu, $data = [])
                         </div>
                     </div>
                     <div class="navbar-nav w-100">
-                        <a href="/index_admin.php" class="nav-item nav-link $menu1_actif"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                        <a href="/index.php" class="nav-item nav-link $menu1_actif"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a href="/machines_live.php" class="nav-item nav-link $menu2_actif"><i class="fa fa-th me-2"></i>Machines</a>
                         <a href="/ticket_admin.php" class="nav-item nav-link $menu3_actif"><i class="fa fa-keyboard me-2"></i>Ticket</a>
                         <a href="/gestion_utilisateur.php" class="nav-item nav-link $menu4_actif"><i class="fa fa-keyboard me-2"></i>Utilisateurs</a>
@@ -182,9 +182,9 @@ function html_generic_admin($title, $contenu, $data = [])
     </nav>
     <!-- Navbar End -->
         <!-- Content Start -->    
-            <div class="content">
+
                 $contenu
-            </div>
+
             <!-- Content End -->
     
             <!-- Back to Top -->

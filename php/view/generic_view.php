@@ -29,7 +29,7 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
     $nav_item_admin = null;
     
     if($user_role == "Administrateur"){
-        $nav_item_admin = "<a href='index_admin.php' class='nav-item nav-link'><i class='fa fa-keyboard me-2'></i>Admin</a>" ;
+        $nav_item_admin = "<a href='machines_live.php' class='nav-item nav-link'><i class='bi bi-file-earmark-person'></i>Admin</a>" ;
     }
 
     $html = <<<END
@@ -64,6 +64,58 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
         <!-- Template Stylesheet -->
         <link href="../../css/style.css" rel="stylesheet">
         $script_calendrier
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('#message-form').on('submit', function(e) {
+                e.preventDefault(); // Empêche le rechargement de la page lors de la soumission du formulaire
+        
+                var message = $('#message').val().trim(); // Récupère et nettoie le message saisi par l'utilisateur
+                var userId = $('input[name="user_id"]').val(); // Récupère l'ID de l'utilisateur (assurez-vous que cette valeur est correctement initialisée quelque part dans votre HTML)
+        
+                if (message && userId) { // Vérifie que le message et l'userId ne sont pas vides
+                    $.ajax({
+                        url: '/php/modele/send_message.php', // Mettez à jour avec l'URL correcte
+                        type: 'POST',
+                        data: {
+                            message: message,
+                            user_id: userId
+                        },
+                        dataType: 'json', // S'attend à recevoir du JSON
+                        success: function(response) {
+                            if (response.success) {
+                                $('#messages').append('<li>' + escapeHtml(response.message) + '</li>'); // Ajoute le message envoyé à la liste dans l'interface utilisateur
+                                $('#message').val(''); // Vide le champ de texte après l'envoi
+                            } else {
+                                alert('Erreur: ' + response.message); // Affiche une alerte en cas d'erreur rapportée par le serveur
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('Erreur AJAX : ' + textStatus + ' - ' + errorThrown);
+                            alert('Erreur AJAX : ' + textStatus + ' - ' + errorThrown); // Affiche une alerte en cas d'erreur AJAX
+                        }
+                    });
+                } else {
+                    alert('Le message ne peut pas être vide et l\'ID de l\'utilisateur doit être spécifié.'); // Affiche une alerte si le champ du message est vide ou l'ID utilisateur n'est pas spécifié
+                }
+            });
+        });
+        
+        function escapeHtml(text) {
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+        </script>
+        
+        
+
     </head>
     <body>
         <div class="container-xxl position-relative bg-white d-flex p-0">
@@ -100,9 +152,9 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
                                 <a href="reservation.php" class="dropdown-item">Réservation</a>
                             </div>
                         </div>
-                        <a href="forum.php" class="nav-item nav-link $menu4_actif"><i class="fa fa-th me-2"></i>Forum</a>
-                        <a href="form.html" class="nav-item nav-link $menu5_actif"><i class="fa fa-keyboard me-2"></i>Formation</a>
-                        <a href="ticket_user.php" class="nav-item nav-link $menu6_actif"><i class="fa fa-keyboard me-2"></i>Support</a>
+                        <a href="forum.php" class="nav-item nav-link $menu4_actif"><i class="bi bi-chat-left-dots"></i>Forum</a>
+                        <a href="form.html" class="nav-item nav-link $menu5_actif"><i class="bi bi-briefcase-fill"></i>Formation</a>
+                        <a href="ticket_user.php" class="nav-item nav-link $menu6_actif"><i class="bi bi-folder"></i>Support</a>
                         $nav_item_admin
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
@@ -122,7 +174,7 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
             <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <a href="index.php" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
                 <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -229,27 +281,7 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
         <script src="../../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     
         <!-- Template Javascript -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function(){
-    $("#chat-form").submit(function(event){
-        event.preventDefault();
-        var message = $("#chat-message").val();
-        $.post("save_message.php", {message: message}, function(){
-            $("#chat-message").val('');
-            loadMessages();
-        });
-    });
-
-    function loadMessages(){
-        $("#chat-box").load("load_messages.php");
-    }
-
-    setInterval(loadMessages, 3000); // Rafraîchit les messages toutes les 3 secondes
-    loadMessages(); // Chargez les messages initiaux
-});
-</script>
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="../../js/main.js"></script>
         $script_calendrier
     </body>

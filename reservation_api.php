@@ -24,13 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
 } else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     //print_r($_POST);
     $aRequest = getPost();
-    $val = array();
-    $val["result"] = "hello wordl";
-    echo json_encode( $aRequest, JSON_PRETTY_PRINT );
-    //exit(0);
+    if ( $aRequest['type'] == "delete" ) {
+        $statut = reservations_delete($aRequest['id']);
+        $val = array();
+        $val["statut"] = $statut ? 1: 0;
+        echo json_encode( $val, JSON_PRETTY_PRINT );
+        }
 }
 
-//print_r($reservations);
 close_database();
 
 
@@ -60,3 +61,4 @@ function getPost()
 
 */
 
+?>

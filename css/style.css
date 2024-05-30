@@ -295,3 +295,27 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+#chat-window {
+    background: var(--light); /* Utilisation de la couleur de fond légère */
+    border: 1px solid var(--primary); /* Bordure avec la couleur primaire */
+    border-radius: 8px; /* Coins arrondis pour un look moderne */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre pour un effet de profondeur */
+}
+
+#message-input {
+    border-right: none; /* Supprime la bordure droite pour un look continu avec le bouton */
+}
+
+#send-button {
+    border-left: none; /* Supprime la bordure gauche pour un look continu avec le champ de saisie */
+}
+
+.input-group-text {
+    background: var(--light); /* Fond clair pour l'icône, si ajoutée */
+    border: none; /* Pas de bordure pour un look épuré */
+}
+
+.input-group-prepend .input-group-text {
+    border-radius: 50%; /* Arrondit l'icône si utilisée */
+}

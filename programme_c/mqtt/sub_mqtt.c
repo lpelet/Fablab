@@ -5,7 +5,7 @@
 
 #define ADDRESS     "tcp://163.5.143.216:8883"
 #define CLIENTID    "ExampleClientSub"
-#define TOPIC       "/portes/"
+#define TOPIC       "/portes/porte_entree/"
 #define QOS         1
 #define TIMEOUT     10000L
 
