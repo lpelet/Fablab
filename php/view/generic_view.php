@@ -153,7 +153,7 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
                             </div>
                         </div>
                         <a href="forum.php" class="nav-item nav-link $menu4_actif"><i class="bi bi-chat-left-dots"></i>Forum</a>
-                        <a href="form.html" class="nav-item nav-link $menu5_actif"><i class="bi bi-briefcase-fill"></i>Formation</a>
+                        <a href="formation.php" class="nav-item nav-link $menu5_actif"><i class="bi bi-briefcase-fill"></i>Formation</a>
                         <a href="ticket_user.php" class="nav-item nav-link $menu6_actif"><i class="bi bi-folder"></i>Support</a>
                         $nav_item_admin
                         <div class="nav-item dropdown">

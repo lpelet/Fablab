@@ -1,10 +1,8 @@
 <?php
 require_once("php/view/generic_view.php");
-require_once("php/view/forum_view.php");
+require_once("php/view/formation_view.php");
 require_once("php/modele/session_modele.php");
 require_once("php/sql/database.php");
-require_once("php/modele/send_message.php");
-require_once("php/modele/display_message.php");
 
 $titre_page = "FABLAB - Forum";
 

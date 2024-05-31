@@ -102,16 +102,16 @@ void send_message(const char *payload, const char *topic) {
     MQTTClient_publishMessage(client, topic, &pubmsg, &token);
     MQTTClient_waitForCompletion(client, token, TIMEOUT);
     MQTTClient_disconnect(client, 10000);
-    MQTTClient_destroy(&client);
+    MQTTClient_destroy(&client);   
 }
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
     char *uid = strndup((char*)message->payload, message->payloadlen);
-    printf("Message arrived with UID: %s\n", uid);
+    printf("\nMessage arrived with UID: %s\n", uid);
     
     if (check_uid(conn, uid)) {
-        send_message("on", "portes/porte_entree/ventouse_status");
-        printf("\non");
+        send_message("on", "portes/porte_entree/ventouse_status"); //erreur code -1 et -3
+        printf("\non pour portes/porte_entree/ventouse_status");
     }
     
     free(uid);
