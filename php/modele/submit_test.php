@@ -2,17 +2,21 @@
 session_start();
 error_log("Script submit_test.php started");
 
-try {
-    $db = new PDO('mysql:host=localhost;dbname=fablab', 'fablab', 'fablab');
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion à la base de données : " . $e->getMessage());
-}
+// Connexion à la base de données
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "your_database";
+
+// Essayez de vous connecter à la base de données et capturez les erreurs
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     error_log("Connection failed: " . $conn->connect_error);
-    die(json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $conn->connect_error]));
+    echo json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $conn->connect_error]);
+    exit();
 }
+error_log("Connection to database established");
 
 // Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
