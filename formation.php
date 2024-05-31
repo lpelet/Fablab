@@ -8,10 +8,10 @@ $titre_page = "FABLAB - Forum";
 
 $data = [];
 $data['menu1_actif'] = "";
-$data['menu2_actif'] = " active";
+$data['menu2_actif'] = "";
 $data['menu3_actif'] = "";
 $data['menu4_actif'] = "";
-$data['menu5_actif'] = "";
+$data['menu5_actif'] = " active";
 $data['menu6_actif'] = "";
 
 if (check_login()) {

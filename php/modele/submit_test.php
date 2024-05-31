@@ -2,19 +2,18 @@
 session_start();
 error_log("Script submit_test.php started");
 
-// Connexion à la base de données
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "your_database";
+try {
+    $db = new PDO('mysql:host=localhost;dbname=fablab', 'fablab', 'fablab');
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion à la base de données : " . $e->getMessage());
+}
 
-// Essayez de vous connecter à la base de données et capturez les erreurs
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli(localhost, fablab, fablab, fablab);
 
 if ($conn->connect_error) {
     error_log("Connection failed: " . $conn->connect_error);
-    echo json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $conn->connect_error]);
-    exit();
+    die(json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $conn->connect_error]));
 }
 error_log("Connection to database established");
 
@@ -44,10 +43,12 @@ if ($test_type === '3D' && $question1 === 'paris' && $question2 === '4') {
 }
 
 // Vérifiez si l'utilisateur a déjà cette certification
-$stmt = $conn->prepare("SELECT * FROM certifications WHERE ID_Utilisateur = ? AND ID_Formation = ?");
+$query = "SELECT * FROM certifications WHERE ID_Utilisateur = ? AND ID_Formation = ?";
+error_log("Prepare query: $query");
+$stmt = $conn->prepare($query);
 if (!$stmt) {
-    error_log("Prepare failed: " . $conn->error);
-    echo json_encode(['status' => 'error', 'message' => 'Erreur de requête.']);
+    error_log("Prepare failed (select): " . $conn->error);
+    echo json_encode(['status' => 'error', 'message' => 'Erreur de requête lors de la vérification de la certification.']);
     exit();
 }
 $stmt->bind_param("ii", $user_id, $certification_type);
@@ -55,41 +56,60 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    error_log("User already has this certification");
-    echo json_encode(['status' => 'error', 'message' => 'Vous avez déjà cette certification.']);
-    exit();
-}
-
-// Insertion de la certification dans la base de données
-$stmt = $conn->prepare("INSERT INTO certifications (ID_Utilisateur, ID_Formation, DateObtention, Score) VALUES (?, ?, NOW(), ?)");
-if (!$stmt) {
-    error_log("Prepare failed: " . $conn->error);
-    echo json_encode(['status' => 'error', 'message' => 'Erreur de requête.']);
-    exit();
-}
-$score = 100; // Note fixe pour simplifier, vous pouvez adapter
-$stmt->bind_param("iii", $user_id, $certification_type, $score);
-
-if ($stmt->execute()) {
-    // Met à jour le champ StatutCertification de l'utilisateur
-    $stmt = $conn->prepare("UPDATE utilisateurs SET StatutCertification = ? WHERE ID_Utilisateur = ?");
+    // Met à jour la certification existante
+    $update_query = "UPDATE certifications SET DateObtention = NOW(), Score = ? WHERE ID_Utilisateur = ? AND ID_Formation = ?";
+    error_log("Prepare update query: $update_query");
+    $stmt = $conn->prepare($update_query);
     if (!$stmt) {
-        error_log("Prepare failed: " . $conn->error);
-        echo json_encode(['status' => 'error', 'message' => 'Erreur de requête.']);
+        error_log("Prepare failed (update): " . $conn->error);
+        echo json_encode(['status' => 'error', 'message' => 'Erreur de requête lors de la mise à jour de la certification.']);
         exit();
     }
-    $certification_status = ($certification_type == 1) ? 'imprimante_3d' : 'decoupe_laser';
-    $stmt->bind_param("si", $certification_status, $user_id);
+    $score = 100; // Note fixe pour simplifier, vous pouvez adapter
+    $stmt->bind_param("iii", $score, $user_id, $certification_type);
     if ($stmt->execute()) {
-        error_log("Certification granted: $certification_status for user $user_id");
-        echo json_encode(['status' => 'success', 'message' => 'Félicitations! Vous avez obtenu la certification.']);
+        error_log("Certification updated for user $user_id");
+        echo json_encode(['status' => 'success', 'message' => 'Félicitations! Votre certification a été mise à jour.']);
     } else {
-        error_log("Failed to update user certification: " . $stmt->error);
-        echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'attribution de la certification.']);
+        error_log("Failed to update certification: " . $stmt->error);
+        echo json_encode(['status' => 'error', 'message' => 'Erreur lors de la mise à jour de la certification.']);
     }
 } else {
-    error_log("Failed to insert certification: " . $stmt->error);
-    echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'attribution de la certification.']);
+    // Insère une nouvelle certification
+    $insert_query = "INSERT INTO certifications (ID_Utilisateur, ID_Formation, DateObtention, Score) VALUES (?, ?, NOW(), ?)";
+    error_log("Prepare insert query: $insert_query");
+    $stmt = $conn->prepare($insert_query);
+    if (!$stmt) {
+        error_log("Prepare failed (insert): " . $conn->error);
+        echo json_encode(['status' => 'error', 'message' => 'Erreur de requête lors de l\'insertion de la certification.']);
+        exit();
+    }
+    $score = 100; // Note fixe pour simplifier, vous pouvez adapter
+    $stmt->bind_param("iii", $user_id, $certification_type, $score);
+
+    if ($stmt->execute()) {
+        // Met à jour le champ StatutCertification de l'utilisateur
+        $update_user_query = "UPDATE utilisateurs SET StatutCertification = ? WHERE ID_Utilisateur = ?";
+        error_log("Prepare update user query: $update_user_query");
+        $stmt = $conn->prepare($update_user_query);
+        if (!$stmt) {
+            error_log("Prepare failed (update user): " . $conn->error);
+            echo json_encode(['status' => 'error', 'message' => 'Erreur de requête lors de la mise à jour de l\'utilisateur.']);
+            exit();
+        }
+        $certification_status = ($certification_type == 1) ? 'imprimante_3d' : 'decoupe_laser';
+        $stmt->bind_param("si", $certification_status, $user_id);
+        if ($stmt->execute()) {
+            error_log("Certification granted: $certification_status for user $user_id");
+            echo json_encode(['status' => 'success', 'message' => 'Félicitations! Vous avez obtenu la certification.']);
+        } else {
+            error_log("Failed to update user certification: " . $stmt->error);
+            echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'attribution de la certification.']);
+        }
+    } else {
+        error_log("Failed to insert certification: " . $stmt->error);
+        echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'attribution de la certification.']);
+    }
 }
 
 $stmt->close();
