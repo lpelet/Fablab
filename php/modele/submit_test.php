@@ -9,7 +9,7 @@ try {
     die("Erreur de connexion à la base de données : " . $e->getMessage());
 }
 
-$conn = new mysqli(localhost, fablab, fablab, fablab);
+$conn = new mysqli('localhost', 'fablab', 'fablab', 'fablab');
 
 if ($conn->connect_error) {
     error_log("Connection failed: " . $conn->connect_error);
@@ -27,14 +27,45 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $test_type = $_POST['test_type'];
 $question1 = strtolower(trim($_POST['question1']));
-$question2 = trim($_POST['question2']);
+$question2 = strtolower(trim($_POST['question2']));
+$question3 = strtolower(trim($_POST['question3']));
+$question4 = strtolower(trim($_POST['question4']));
+$question5 = strtolower(trim($_POST['question5']));
 
-error_log("Test Type: $test_type, Question 1: $question1, Question 2: $question2");
+error_log("Test Type: $test_type, Question 1: $question1, Question 2: $question2, Question 3: $question3, Question 4: $question4, Question 5: $question5");
+
+// Vérification des réponses pour le test Imprimante 3D
+$validAnswers3D = [
+    'stl',   // Réponse pour la question 1
+    'cura',  // Réponse pour la question 2
+    'buse',  // Réponse pour la question 3
+    'adhérence', // Réponse pour la question 4
+    'poncer' // Réponse pour la question 5
+];
+
+// Vérification des réponses pour le test Découpe Laser
+$validAnswersLaser = [
+    'dxf',      // Réponse pour la question 1
+    'ventilation', // Réponse pour la question 2
+    'hauteur',   // Réponse pour la question 3
+    'incendie',  // Réponse pour la question 4
+    'pvc'      // Réponse pour la question 5
+];
 
 // Vérification des réponses (ajustez les conditions selon vos besoins)
-if ($test_type === '3D' && $question1 === 'paris' && $question2 === '4') {
+if ($test_type === '3D' && 
+    $question1 === $validAnswers3D[0] && 
+    $question2 === $validAnswers3D[1] && 
+    $question3 === $validAnswers3D[2] && 
+    $question4 === $validAnswers3D[3] && 
+    $question5 === $validAnswers3D[4]) {
     $certification_type = 1; // ID de l'Imprimante 3D dans la table Formations
-} elseif ($test_type === 'Laser' && $question1 === 'paris' && $question2 === '4') {
+} elseif ($test_type === 'Laser' && 
+    $question1 === $validAnswersLaser[0] && 
+    $question2 === $validAnswersLaser[1] && 
+    $question3 === $validAnswersLaser[2] && 
+    $question4 === $validAnswersLaser[3] && 
+    $question5 === $validAnswersLaser[4]) {
     $certification_type = 2; // ID de la Découpe Laser dans la table Formations
 } else {
     error_log("Test failed: Wrong answers");

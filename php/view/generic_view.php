@@ -43,7 +43,7 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
         <meta content="" name="description">
     
         <!-- Favicon -->
-        <link href="img/favicon.ico" rel="icon">
+        <link href="/img/fablab_logo.png" rel="icon">
     
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -156,15 +156,6 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
                         <a href="formation.php" class="nav-item nav-link $menu5_actif"><i class="bi bi-briefcase-fill"></i>Formation</a>
                         <a href="ticket_user.php" class="nav-item nav-link $menu6_actif"><i class="bi bi-folder"></i>Support</a>
                         $nav_item_admin
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
-                            <div class="dropdown-menu bg-transparent border-0">
-                                <a href="signin.html" class="dropdown-item">Sign In</a>
-                                <a href="signup.html" class="dropdown-item">Sign Up</a>
-                                <a href="404.html" class="dropdown-item">404 Error</a>
-                                <a href="blank.html" class="dropdown-item">Blank Page</a>
-                            </div>
-                        </div>
                     </div>
                 </nav>
             </div>

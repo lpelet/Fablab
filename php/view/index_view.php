@@ -100,53 +100,31 @@ function html_accueil()
         </div>
         <!-- Main Container End -->
     
-        <!-- Formation & Certification Div (untouched) -->
+        <!-- Formation & Certification Div -->
         <div class="container-fluid pt-4 px-4">
             <div class="bg-light1 text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h6 class="mb-0">Formation & Certification</h6>
-                    <a href="#">Voir</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table text-start align-middle table-bordered table-hover mb-0">
                         <thead>
                             <tr class="text-dark">
-                                <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                                <th scope="col">Date</th>
-                                <th scope="col">ID Machine</th>
-                                <th scope="col">Profil</th>
-                                <th scope="col">Temps</th>
-                                <th scope="col">Statut</th>
-                                <th scope="col">Validation</th>
+                                <th scope="col">Formation</th>
+                                <th scope="col">Type de Machine</th>
+                                <th scope="col">Accès</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input class="form-check-input" type="checkbox"></td>
-                                <td>01 Jan 2045</td>
-                                <td>INV-0123</td>
-                                <td>Fablab</td>
-                                <td>2h</td>
-                                <td>Terminé</td>
-                                <td><a class="btn btn-sm btn-primary" href="#">Certifié</a></td>
+                                <td>Formation Imprimante 3D</td>
+                                <td>Imprimante 3D</td>
+                                <td><a class="btn btn-sm btn-primary" href="formation.php">Accéder</a></td>
                             </tr>
                             <tr>
-                                <td><input class="form-check-input" type="checkbox"></td>
-                                <td>01 Jan 2055</td>
-                                <td>INV-0345</td>
-                                <td>Fablab</td>
-                                <td>3h</td>
-                                <td>En cours</td>
-                                <td><a class="btn btn-sm btn-primary" href="#">En cours</a></td>
-                            </tr>
-                            <tr>
-                                <td><input class="form-check-input" type="checkbox"></td>
-                                <td>01 Jan 2065</td>
-                                <td>INV-0678</td>
-                                <td>Fablab</td>
-                                <td>1h30min</td>
-                                <td>Terminé</td>
-                                <td><a class="btn btn-sm btn-primary" href="#">Refusé</a></td>
+                                <td>Formation Découpe Laser</td>
+                                <td>Découpe Laser</td>
+                                <td><a class="btn btn-sm btn-primary" href="formation.php">Accéder</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -166,14 +144,9 @@ function html_accueil()
             </div>
         </div>
         <!-- Chat Section End -->
-
-
     </body>
     </html>
     
-    
-    
-
 END;
 
     return $html;
