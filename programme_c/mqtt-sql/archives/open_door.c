@@ -6,7 +6,8 @@
 #include <mysql/mysql.h>
 
 #define ADDRESS     "tcp://163.5.143.216:8883"
-#define CLIENTID    "ExampleClientSub"
+#define CLIENTID_PUB "FABLAB_CENTRALE_PUB"
+#define CLIENTID_SUB "FABLAB_CENTRALE_SUB"
 #define TOPIC       "portes/porte_entree/uid"
 #define QOS         1
 #define TIMEOUT     10000L
@@ -93,7 +94,7 @@ void send_message(const char *payload, const char *topic) {
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
     MQTTClient_deliveryToken token;
 
-    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(&client, ADDRESS, CLIENTID_PUB, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     pubmsg.payload = (void*) payload;
     pubmsg.payloadlen = strlen(payload);
     pubmsg.qos = QOS;
@@ -134,7 +135,7 @@ int main(int argc, char* argv[]) {
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     int rc;
 
-    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(&client, ADDRESS, CLIENTID_SUB, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
@@ -145,7 +146,7 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    printf("Subscribing to topic %s for client %s using QoS%d\n\n", TOPIC, CLIENTID, QOS);
+    printf("Topic : %s, client_id : %s, QoS %d\n\n", TOPIC, CLIENTID_SUB, QOS);
     MQTTClient_subscribe(client, TOPIC, QOS);
 
     getchar();
