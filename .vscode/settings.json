@@ -45,6 +45,9 @@
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "mqttclient.h": "c"
+        "mqttclient.h": "c",
+        "mysql.h": "c",
+        "stdlib.h": "c",
+        "time.h": "c"
     }
 }

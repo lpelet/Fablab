@@ -5,7 +5,7 @@ BROKER_ADDRESS="163.5.143.216"
 BROKER_PORT="8883"
 
 # Détails de connexion MQTT (ajoutez des options de sécurité selon les besoins, comme les certificats TLS)
-MQTT_TOPIC="portes/porte_entree/uid"
+MQTT_TOPIC="portes/porte_entree"
 MQTT_CLIENT_ID="bash_publisher"
 BADGES_MAUVAIS="123456789"
 BADGES_OK="218B365F"
