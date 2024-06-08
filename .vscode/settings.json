@@ -48,6 +48,8 @@
         "mqttclient.h": "c",
         "mysql.h": "c",
         "stdlib.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "mqtt.h": "c",
+        "sql.h": "c"
     }
 }

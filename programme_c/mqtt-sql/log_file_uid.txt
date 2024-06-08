@@ -1,0 +1,4 @@
+Date: 2024-06-08 15:40:48 - Aucune réservation valide trouvée pour l'UID 123456789
+Date: 2024-06-08 15:40:53 - ID_Utilisateur: 4, Prenom: Eliott, Nom: FARRAT, Email: farrateliott@gmail.com, Uid: 218B365F, Heure de début: 2024-06-08 12:00:00, Heure de fin: 2024-06-08 17:00:00
+Date: 2024-06-08 15:40:58 - Aucune réservation valide trouvée pour l'UID 123456789
+Date: 2024-06-08 15:41:03 - ID_Utilisateur: 4, Prenom: Eliott, Nom: FARRAT, Email: farrateliott@gmail.com, Uid: 218B365F, Heure de début: 2024-06-08 12:00:00, Heure de fin: 2024-06-08 17:00:00
