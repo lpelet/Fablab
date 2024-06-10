@@ -5,51 +5,45 @@
 #include <mysql/mysql.h>
 #include <time.h>
 
-// Définition des constantes pour la configuration MQTT
 #define ADDRESS     "tcp://163.5.143.216:8883"
-#define CLIENTID    "MQTT Centrale"
+#define CLIENTID    "ExampleClient"
 #define TOPIC       "portes/porte_entree"
 #define TOPIC_DEBUG      "portes/porte_entree_debug"
 #define TOPIC_MACHINE "machines/imprimante_3D_1"
 #define QOS         1
 #define TIMEOUT     3000L
 
-// Déclarations de fonctions pour le client MQTT
 void delivered(void *context, MQTTClient_deliveryToken dt);
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message);
 void connlost(void *context, char *cause);
-
-// Fonctions pour la gestion de la base de données
 void connect_db();
 void disconnect_db();
 bool check_uid_and_reservation(MYSQL *conn, const char *uid, char *duration);
 
 MYSQL *conn;
 
-// Fonction appelée lorsque la livraison du message est confirmée
 void delivered(void *context, MQTTClient_deliveryToken dt) {
-    printf("Confirmation de la livraison du message avec le token %d\n", dt);
+    printf("Message with token value %d delivery confirmed\n", dt);
 }
 
-// Fonction appelée à la réception d'un message MQTT
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
     char* payloadptr = message->payload;
-    char reservationDuration[16] = {0};  // Contient la durée de la réservation
-    char uid[16];  // Augmenter la taille en fonction de la longueur UID attendue
+    char reservationDuration[16] = {0};  // Holds the reservation duration
 
-    sscanf(payloadptr, "{uid : %[^,],", uid);
+    printf("\n\n     topic: %s\n", topicName);
+    printf("   message: %s\n", payloadptr);
 
     MQTTClient client = (MQTTClient)context;
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
     MQTTClient_deliveryToken token;
 
-    if (check_uid_and_reservation(conn, uid, reservationDuration)) {
+    if (check_uid_and_reservation(conn, payloadptr, reservationDuration)) {
         pubmsg.payload = "oui";
         pubmsg.payloadlen = strlen(pubmsg.payload);
         MQTTClient_publishMessage(client, TOPIC_DEBUG, &pubmsg, &token);
         MQTTClient_waitForCompletion(client, token, TIMEOUT);
 
-        // Envoyer les données de la machine si la réservation est valide
+        // Send the machine data if the reservation is valid
         char machineMsg[256];
         snprintf(machineMsg, sizeof(machineMsg), "{\n\"status\": \"on\",\n\"temps\": \"%s\"\n}", reservationDuration);
         pubmsg.payload = machineMsg;
@@ -68,13 +62,13 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     return 1;
 }
 
-// Fonction appelée en cas de perte de la connexion
+
+
 void connlost(void *context, char *cause) {
-    printf("\nConnexion perdue\n");
+    printf("\nConnection lost\n");
     printf("     cause: %s\n", cause);
 }
 
-// Connexion à la base de données
 void connect_db() {
     char *server = "localhost";
     char *user = "fablab";
@@ -83,17 +77,15 @@ void connect_db() {
 
     conn = mysql_init(NULL);
     if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
-        fprintf(stderr, "Échec de la connexion : %s\n", mysql_error(conn));
+        fprintf(stderr, "Connection failed: %s\n", mysql_error(conn));
         exit(1);
     }
 }
 
-// Déconnexion de la base de données
 void disconnect_db() {
     mysql_close(conn);
 }
 
-// Vérification de l'UID et de la réservation dans la base de données
 bool check_uid_and_reservation(MYSQL *conn, const char *uid, char *duration) {
     char query[512];
     MYSQL_RES *res;
@@ -106,7 +98,7 @@ bool check_uid_and_reservation(MYSQL *conn, const char *uid, char *duration) {
 
     file = fopen("log_file_uid.txt", "a");
     if (file == NULL) {
-        perror("Erreur lors de l'ouverture du fichier");
+        perror("Error opening file");
         return false;
     }
 
@@ -120,15 +112,14 @@ bool check_uid_and_reservation(MYSQL *conn, const char *uid, char *duration) {
         "WHERE U.uid_rfid='%s' AND '%s' BETWEEN R.DateHeureDebut AND R.DateHeureFin", uid, dateTime);
 
     if (mysql_query(conn, query)) {
-        fprintf(stderr, "Erreur de requête : %s\n", mysql_error(conn));
+        fprintf(stderr, "Query Error: %s\n", mysql_error(conn));
         fclose(file);
         return false;
     }
 
     res = mysql_store_result(conn);
-    
     if (res == NULL) {
-        fprintf(stderr, "Erreur de récupération des résultats : %s\n", mysql_error(conn));
+        fprintf(stderr, "Result retrieval error: %s\n", mysql_error(conn));
         fclose(file);
         return false;
     }
@@ -138,10 +129,10 @@ bool check_uid_and_reservation(MYSQL *conn, const char *uid, char *duration) {
         while ((row = mysql_fetch_row(res))) {
             fprintf(file, "Date: %s - ID_Utilisateur: %s, Prenom: %s, Nom: %s, Email: %s, Uid: %s, Heure de début: %s, Heure de fin: %s\n", 
                     dateTime, row[0], row[1], row[2], row[3], row[4], row[5], row[6]);
-            printf("Accès autorisé - UID : %s\n\n", 
-                    row[4]);
+            printf("Date: %s - ID_Utilisateur: %s, Prenom: %s, Nom: %s, Email: %s, Uid: %s, Heure de début: %s, Heure de fin: %s\n", 
+                   dateTime, row[0], row[1], row[2], row[3], row[4], row[5], row[6]);
 
-            // Convertir les temps et calculer la durée
+            // Convert times and calculate duration
             struct tm start_tm, end_tm;
             strptime(row[5], "%Y-%m-%d %H:%M:%S", &start_tm);
             strptime(row[6], "%Y-%m-%d %H:%M:%S", &end_tm);
@@ -152,8 +143,8 @@ bool check_uid_and_reservation(MYSQL *conn, const char *uid, char *duration) {
         }
     } else {
         fprintf(file, "Date: %s - Aucune réservation valide trouvée pour l'UID %s\n", dateTime, uid);
-        printf("Accès non autorisé - UID : %s\n\n", uid);
-        sprintf(duration, "00:00:01");  // Durée minimale par défaut
+        printf("Date: %s - Aucune réservation valide trouvée pour l'UID %s\n", dateTime, uid);
+        sprintf(duration, "00:00:01");  // Set default minimal duration
     }
 
     mysql_free_result(res);
@@ -161,7 +152,6 @@ bool check_uid_and_reservation(MYSQL *conn, const char *uid, char *duration) {
     return reservationValid;
 }
 
-// Fonction principale
 int main(int argc, char* argv[]) {
     connect_db();
 
@@ -177,17 +167,19 @@ int main(int argc, char* argv[]) {
     MQTTClient_setCallbacks(client, client, connlost, msgarrvd, delivered);
 
     if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) {
-        printf("Échec de la connexion, code de retour %d\n", rc);
+        printf("Failed to connect, return code %d\n", rc);
         exit(EXIT_FAILURE);
     }
 
+    printf("Subscribing to topic %s for client %s using QoS%d\n"
+           "Press Q<Enter) to quit\n", TOPIC, CLIENTID, QOS);
     MQTTClient_subscribe(client, TOPIC, QOS);
 
-    // Attendre un signal externe pour terminer, par exemple un événement système
-    while (1) {
-        printf("\n");
-        pause(); // Met l'application en pause jusqu'à recevoir un signal (par exemple SIGINT)
-    }
+    // Attendre l'input utilisateur pour terminer
+    do {
+        char c = getchar();
+        if (c == 'Q' || c == 'q') break;
+    } while(1);
 
     MQTTClient_disconnect(client, 10000);
     MQTTClient_destroy(&client);
