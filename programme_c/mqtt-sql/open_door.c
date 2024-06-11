@@ -8,8 +8,8 @@
 // Définition des constantes pour la configuration MQTT
 #define ADDRESS     "tcp://163.5.143.216:8883"
 #define CLIENTID    "MQTT Centrale"
-#define TOPIC       "portes/porte_entree"
-#define TOPIC_DEBUG      "portes/porte_entree_debug"
+#define TOPIC_UID       "portes/porte_entree/uid"
+#define TOPIC_STATUS     "portes/porte_entree/statut"
 #define TOPIC_MACHINE "machines/imprimante_3D_1"
 #define QOS         1
 #define TIMEOUT     3000L
@@ -37,29 +37,29 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     char reservationDuration[16] = {0};  // Contient la durée de la réservation
     char uid[16];  // Augmenter la taille en fonction de la longueur UID attendue
 
-    sscanf(payloadptr, "{uid : %[^,],", uid);
+    sscanf(payloadptr, "{uid_rfid : %[^}],", uid);
 
     MQTTClient client = (MQTTClient)context;
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
     MQTTClient_deliveryToken token;
 
     if (check_uid_and_reservation(conn, uid, reservationDuration)) {
-        pubmsg.payload = "oui";
+        pubmsg.payload = "{ventouse_status : ON \n}";
         pubmsg.payloadlen = strlen(pubmsg.payload);
-        MQTTClient_publishMessage(client, TOPIC_DEBUG, &pubmsg, &token);
+        MQTTClient_publishMessage(client, TOPIC_STATUS, &pubmsg, &token);
         MQTTClient_waitForCompletion(client, token, TIMEOUT);
 
         // Envoyer les données de la machine si la réservation est valide
         char machineMsg[256];
-        snprintf(machineMsg, sizeof(machineMsg), "{\n\"status\": \"on\",\n\"temps\": \"%s\"\n}", reservationDuration);
+        snprintf(machineMsg, sizeof(machineMsg), "{status: ON, temps : %s}", reservationDuration);
         pubmsg.payload = machineMsg;
         pubmsg.payloadlen = strlen(machineMsg);
         MQTTClient_publishMessage(client, TOPIC_MACHINE, &pubmsg, &token);
         MQTTClient_waitForCompletion(client, token, TIMEOUT);
     } else {
-        pubmsg.payload = "non";
+        pubmsg.payload = "{ventouse_status : OFF \n}";;
         pubmsg.payloadlen = strlen(pubmsg.payload);
-        MQTTClient_publishMessage(client, TOPIC_DEBUG, &pubmsg, &token);
+        MQTTClient_publishMessage(client, TOPIC_STATUS, &pubmsg, &token);
         MQTTClient_waitForCompletion(client, token, TIMEOUT);
     }
 
@@ -127,6 +127,7 @@ bool check_uid_and_reservation(MYSQL *conn, const char *uid, char *duration) {
 
     res = mysql_store_result(conn);
     
+    
     if (res == NULL) {
         fprintf(stderr, "Erreur de récupération des résultats : %s\n", mysql_error(conn));
         fclose(file);
@@ -181,7 +182,7 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    MQTTClient_subscribe(client, TOPIC, QOS);
+    MQTTClient_subscribe(client, TOPIC_UID, QOS);
 
     // Attendre un signal externe pour terminer, par exemple un événement système
     while (1) {
