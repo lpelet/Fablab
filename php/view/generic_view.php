@@ -43,7 +43,7 @@ function html_generic($title, $contenu,  $script_calendrier  = "", $data = [])
         <meta content="" name="description">
     
         <!-- Favicon -->
-        <link href="/img/fablab_logo.png" rel="icon">
+        <link href="/img/favicon_fablab.png" rel="icon">
     
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -86,12 +86,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	var eventData = {
 	  id: eventId,
 	  start: newStart.toISOString(),
-	  end: newEnd ? newEnd.toISOString() : null
+	  end: newEnd ? newEnd.toISOString() : null,
+	  hello_world: "Coucou"
 	};
   
 	// Faire une requête AJAX pour mettre à jour l'événement sur le serveur
 	// Ici, vous devez utiliser votre propre logique pour envoyer les données au serveur
 	// Par exemple, avec jQuery :
+	// RTFM
 	$.ajax({
 	  url: 'http://163.5.143.216/calendrier.php',
 	  type: 'POST',
