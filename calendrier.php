@@ -5,7 +5,7 @@ require_once("php/view/planning_view.php");
 require_once("php/modele/session_modele.php");
 require_once("php/modele/reservations_modele.php");
 require_once("/var/www/getPost.php");
-require_once("/var/www/js/calendrier.js");
+
 
 $db = null;
 open_database();
@@ -29,25 +29,19 @@ $script_calendrier  = '
     <script src="js/calendrier.js?v='.$time_now.'"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>';
 
-// Vérifier si l'utilisateur est connecté
 if (check_login()) {
-    // Vérifier si la méthode de la requête est PUT
     if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-        // Récupérer les données de la requête PUT
-        parse_str(file_get_contents("php://input"), $aRequest);
+        $aRequest = getPost();
+        
+        $reservation['id_reservation'] = $_POST['id'];
+        $reservation['date_debut'] = $_POST['start'];
+        $reservation['date_fin'] = $_POST['end'];
 
-        // Préparer les données de réservation
-        $reservation = array();
-        $reservation['ID_Reservation'] = $aRequest['id'];
-        $reservation['DateHeureDebut'] = $aRequest['start'];
-        $reservation['DateHeureFin'] = $aRequest['end'];
-
-        // Appeler la fonction de modification de réservation
-        $result = reservations_modification($reservation);
+        reservations_modification($reservation);
 
         // Préparer et retourner la réponse
         $data = array();
-        $data['status'] = $result ? 'OK' : 'Error';
+        $data['status'] ='OK';
         print(json_encode($data, JSON_PRETTY_PRINT));
 
         exit(0);

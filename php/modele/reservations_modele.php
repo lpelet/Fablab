@@ -85,11 +85,10 @@ function reservations_modification($reservation)
 {
     global $db;
 
-    $sql = "UPDATE Reservations SET DateHeureDebut = :date_debut, DateHeureFin = :date_fin WHERE ID_Reservation = :id_reservation";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':id_reservation', $reservation['ID_Reservation'], PDO::PARAM_INT);
-    $stmt->bindParam(':date_debut', $reservation['DateHeureDebut'], PDO::PARAM_STR);
-    $stmt->bindParam(':date_fin', $reservation['DateHeureFin'], PDO::PARAM_STR);
+    $stmt = $db->prepare(SQL_RESERVATIONS_UPDATE);
+    $stmt->bindParam(':id_reservation', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':date_debut', $start, PDO::PARAM_INT);
+    $stmt->bindParam(':date_fin', $end, PDO::PARAM_INT);
 
     $statut_requete = $stmt->execute();
 
