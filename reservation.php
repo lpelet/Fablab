@@ -22,7 +22,7 @@ if(check_login()){
     $data['flag_reservation_add'] = null;
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $reservation['id_utilisateur'] = $_SESSION['user_id'];
-        $reservation['id_machine'] = $_POST['machine'];
+        $reservation['id_machine'] = $_POST['id_machine'];
         $reservation['date_debut'] = $_POST['dateDebut'];
         $reservation['date_fin'] = $_POST['dateFin'];
         $reservation['status_reservation'] = "Confirmée";

@@ -30,6 +30,7 @@ $script_calendrier  = '
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>';
 
 if (check_login()) {
+    $data['modif'] = null;
     if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         $aRequest = getPost();
         
@@ -37,7 +38,7 @@ if (check_login()) {
         $reservation['date_debut'] = $_POST['start'];
         $reservation['date_fin'] = $_POST['end'];
 
-        reservations_modification($reservation);
+        $data['modif'] = reservations_modification($reservation);
 
         // Préparer et retourner la réponse
         $data = array();

@@ -3,22 +3,22 @@
 define("SQL_RESERVATIONS_INDEX", "
     SELECT 
         r.ID_Reservation,
-        r.ID_machine,
+        r.id_machine,
         r.DateHeureDebut,
         r.DateHeureFin,
         m.nom
     FROM `Reservations` r
     JOIN machines m 
-        ON r.ID_machine = m.id_machine
+        ON r.id_machine = m.id_machine
     WHERE 
         r.StatutReservation = 'Confirmée'
     
 ");
 
 define("SQL_RESERVATIONS_ADD", "
-    INSERT INTO Reservations
-    (ID_Utilisateur, ID_machine, DateHeureDebut, DateHeureFin, StatutReservation)
-    VALUES (:id_utilisateur, :id_machine, :date_debut, :date_fin, :status_reservation);
+        INSERT INTO Reservations
+        (ID_Utilisateur, id_machine, DateHeureDebut, DateHeureFin, StatutReservation)
+        VALUES (:id_utilisateur, :id_machine, :date_debut, :date_fin, :status_reservation);
 ");
 
 define("SQL_RESERVATIONS_DELETE", "
@@ -86,9 +86,9 @@ function reservations_modification($reservation)
     global $db;
 
     $stmt = $db->prepare(SQL_RESERVATIONS_UPDATE);
-    $stmt->bindParam(':id_reservation', $id, PDO::PARAM_INT);
-    $stmt->bindParam(':date_debut', $start, PDO::PARAM_INT);
-    $stmt->bindParam(':date_fin', $end, PDO::PARAM_INT);
+    $stmt->bindParam(':id_reservation', $reservation['id'], PDO::PARAM_INT);
+    $stmt->bindParam(':date_debut', $reservation['start'], PDO::PARAM_INT);
+    $stmt->bindParam(':date_fin', $reservation['end'], PDO::PARAM_INT);
 
     $statut_requete = $stmt->execute();
 
