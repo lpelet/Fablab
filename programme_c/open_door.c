@@ -34,8 +34,8 @@ void delivered(void *context, MQTTClient_deliveryToken dt) {
 // Fonction appelée à la réception d'un message MQTT
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
     char* payloadptr = message->payload;
-    char reservationDuration[16] = {0};  // Contient la durée de la réservation
-    char uid[16];  // Augmenter la taille en fonction de la longueur UID attendue
+    char reservationDuration[16] = {0};
+    char uid[16];
 
     sscanf(payloadptr, "{uid_rfid : %[^}],", uid);
 
@@ -170,8 +170,7 @@ int main(int argc, char* argv[]) {
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     int rc;
 
-    MQTTClient_create(&client, ADDRESS, CLIENTID,
-        MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
@@ -184,10 +183,9 @@ int main(int argc, char* argv[]) {
 
     MQTTClient_subscribe(client, TOPIC_UID, QOS);
 
-    // Attendre un signal externe pour terminer, par exemple un événement système
     while (1) {
         printf("\n");
-        pause(); // Met l'application en pause jusqu'à recevoir un signal (par exemple SIGINT)
+        pause();
     }
 
     MQTTClient_disconnect(client, 10000);

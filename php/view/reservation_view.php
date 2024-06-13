@@ -18,8 +18,8 @@ function html_reservation($data = [])
                     <input type="datetime-local" id="DateHeureFin" name="dateFin" required>
                     </br>
                     </br>
-                    <label for="Equipements">Choisissez une machine :</label>
-                    <select id="nom" name="Equipements" required>
+                    <label for="machine">Choisissez une machine :</label>
+                    <select id="nom" name="machine" required>
                         <option value="2">Imprimante 3D</option>
                         <option value="3">Découpe laser</option>
                     </select>

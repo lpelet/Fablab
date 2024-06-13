@@ -28,7 +28,18 @@ $script_calendrier  = '
 
 
 if(check_login()){
-
+    if($_SERVER['REQUEST_METHOD'] == 'PUT'){
+        $mon_post = print_r($_POST, true);
+        
+        exit(0);
+        $reservation['id_utilisateur'] = $_SESSION['user_id'];
+        $reservation['id_machine'] = $_POST['machine'];
+        $reservation['date_debut'] = $_POST['dateDebut'];
+        $reservation['date_fin'] = $_POST['dateFin'];
+        $reservation['status_reservation'] = "Confirmée";
+    
+        $data['flag_reservation_add'] = reservations_add($reservation);
+    }
     echo html_generic($titre_page, html_planning([]),  $script_calendrier, $data);
 
 }else{

@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Par exemple, avec jQuery :
 	$.ajax({
 	  url: 'http://163.5.143.216/calendrier.php',
-	  type: 'PUT',
+	  type: 'POST',
 	  contentType: 'application/json',
 	  data: JSON.stringify(eventData),
 	  success: function(response) {
