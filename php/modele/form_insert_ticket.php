@@ -22,7 +22,7 @@ function ticket_insert($value_email, $value_titre, $value_description)
     $stmt = $db->prepare("INSERT INTO ticket (email, titre, description, date_ouverture, status) VALUES (:email, :titre, :description, :date_ouverture, :status)");
     $stmt->execute($data);
 
-    echo "Demande enregistrée avec succès!";
+    header("Location: ticket_user.php");
 }
 
 // Appel de la fonction avec les données POST
