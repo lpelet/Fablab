@@ -89,11 +89,28 @@ document.addEventListener('DOMContentLoaded', function() {
 	  end: newEnd ? newEnd.toISOString() : null,
 	  hello_world: "Coucou"
 	};
-  
+
+	//Log des données envoyées pour vérification
+	console.log('Données envoyées au serveur:', eventData);
+
 	// Faire une requête AJAX pour mettre à jour l'événement sur le serveur
-	// Ici, vous devez utiliser votre propre logique pour envoyer les données au serveur
-	// Par exemple, avec jQuery :
-	// RTFM
+	$.ajax({
+		url: 'http://163.5.143.216/calendrier.php',
+		type: 'PUT',
+		dataType: 'json',
+		data: JSON.stringify(eventData),
+		async: false,
+		success: function(response) {
+		  console.log('Événement mis à jour avec succès sur le serveur:', response);
+		},
+		error: function(xhr, status, error) {
+		  console.error('Erreur lors de la mise à jour de l\'événement sur le serveur:', error);
+		}
+	  });
+  
+/*
+
+	// Faire une requête AJAX pour mettre à jour l'événement sur le serveur
 	$.ajax({
 	  url: 'http://163.5.143.216/calendrier.php',
 	  type: 'POST',
@@ -106,5 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		console.error('Erreur lors de la mise à jour de l\'événement sur le serveur:', error);
 	  }
 	});
+*/
+
   }
   

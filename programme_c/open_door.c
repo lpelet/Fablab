@@ -8,7 +8,7 @@
 // Définition des constantes pour la configuration MQTT
 #define ADDRESS     "tcp://163.5.143.216:8883"
 #define CLIENTID    "MQTT Centrale"
-#define TOPIC_UID       "portes/porte_entree/uid"
+#define TOPIC_UID       "portes/porte_entree/uid_rfid"
 #define TOPIC_STATUS     "portes/porte_entree/statut"
 #define TOPIC_MACHINE "machines/imprimante_3D_1"
 #define QOS         1
@@ -44,7 +44,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     MQTTClient_deliveryToken token;
 
     if (check_uid_and_reservation(conn, uid, reservationDuration)) {
-        pubmsg.payload = "{ventouse_status : ON \n}";
+        pubmsg.payload = "{ventouse_status : ON}";
         pubmsg.payloadlen = strlen(pubmsg.payload);
         MQTTClient_publishMessage(client, TOPIC_STATUS, &pubmsg, &token);
         MQTTClient_waitForCompletion(client, token, TIMEOUT);

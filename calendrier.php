@@ -28,9 +28,10 @@ $script_calendrier  = '
 
 
 if(check_login()){
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $mon_post = print_r($_REQUEST, true);
-        print($mon_post);
+    if($_SERVER['REQUEST_METHOD'] == 'PUT'){
+        echo "Coucou";
+        //$mon_post = print_r($_REQUEST, true);
+        //print($mon_post);
         exit(0);
         $reservation['id_utilisateur'] = $_SESSION['user_id'];
         $reservation['id_machine'] = $_POST['machine'];
