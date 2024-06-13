@@ -1,4 +1,6 @@
-Date: 2024-06-13 15:28:17 - ID_Utilisateur: 4, Prenom: Eliott, Nom: FARRAT, Email: farrateliott@gmail.com, Uid: 77A53F40, Heure de début: 2024-06-13 12:00:00, Heure de fin: 2024-06-14 17:00:00
-Date: 2024-06-13 15:28:23 - ID_Utilisateur: 4, Prenom: Eliott, Nom: FARRAT, Email: farrateliott@gmail.com, Uid: 77A53F40, Heure de début: 2024-06-13 12:00:00, Heure de fin: 2024-06-14 17:00:00
-Date: 2024-06-13 15:28:25 - ID_Utilisateur: 4, Prenom: Eliott, Nom: FARRAT, Email: farrateliott@gmail.com, Uid: 77A53F40, Heure de début: 2024-06-13 12:00:00, Heure de fin: 2024-06-14 17:00:00
-Date: 2024-06-13 15:28:26 - ID_Utilisateur: 4, Prenom: Eliott, Nom: FARRAT, Email: farrateliott@gmail.com, Uid: 77A53F40, Heure de début: 2024-06-13 12:00:00, Heure de fin: 2024-06-14 17:00:00
+Date: 2024-06-13 18:00:56 - Aucune réservation valide trouvée pour l'UID 123456789
+Date: 2024-06-13 18:01:01 - Aucune réservation valide trouvée pour l'UID 218B365F
+Date: 2024-06-13 18:01:06 - Aucune réservation valide trouvée pour l'UID 123456789
+Date: 2024-06-13 18:01:11 - Aucune réservation valide trouvée pour l'UID 218B365F
+Date: 2024-06-13 18:01:21 - ID_Utilisateur: 4, Prenom: Eliott, Nom: FARRAT, Email: farrateliott@gmail.com, Uid: 77A53F40, Heure de début: 2024-06-13 12:00:00, Heure de fin: 2024-06-13 20:00:00
+Date: 2024-06-13 18:01:36 - ID_Utilisateur: 4, Prenom: Eliott, Nom: FARRAT, Email: farrateliott@gmail.com, Uid: 77A53F40, Heure de début: 2024-06-13 12:00:00, Heure de fin: 2024-06-13 20:00:00

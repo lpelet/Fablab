@@ -26,6 +26,14 @@ define("SQL_RESERVATIONS_DELETE", "
     WHERE ID_Reservation = :id_reservation;
 ");
 
+define("SQL_RESERVATIONS_UPDATE", "
+    UPDATE Reservations SET
+    ID_Reservation = :id,
+    DateHeureDebut = :date_debut,
+    DateHeureFin = :date_fin,
+    WHERE ID_Reservation = :id;
+");
+
 function reservations_index($date_debut, $date_fin)
 {
     global $db;
@@ -61,6 +69,27 @@ function reservations_delete($id)
 
     $stmt = $db->prepare(SQL_RESERVATIONS_DELETE);
     $stmt->bindParam(':id_reservation', $id, PDO::PARAM_INT);
+
+    $statut_requete = $stmt->execute();
+
+    return $statut_requete;    
+}
+
+/*
+$reservation['id_reservation'] = $_POST['id'];
+$reservation['date_debut'] = $_POST['start'];
+$reservation['date_fin'] = $_POST['end'];
+*/
+// Fonction pour modifier une réservation
+function reservations_modification($reservation)
+{
+    global $db;
+
+    $sql = "UPDATE Reservations SET DateHeureDebut = :date_debut, DateHeureFin = :date_fin WHERE ID_Reservation = :id_reservation";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id_reservation', $reservation['ID_Reservation'], PDO::PARAM_INT);
+    $stmt->bindParam(':date_debut', $reservation['DateHeureDebut'], PDO::PARAM_STR);
+    $stmt->bindParam(':date_fin', $reservation['DateHeureFin'], PDO::PARAM_STR);
 
     $statut_requete = $stmt->execute();
 

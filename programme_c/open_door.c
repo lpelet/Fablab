@@ -57,7 +57,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         MQTTClient_publishMessage(client, TOPIC_MACHINE, &pubmsg, &token);
         MQTTClient_waitForCompletion(client, token, TIMEOUT);
     } else {
-        pubmsg.payload = "{ventouse_status : OFF \n}";;
+        pubmsg.payload = "{ventouse_status : OFF}";
         pubmsg.payloadlen = strlen(pubmsg.payload);
         MQTTClient_publishMessage(client, TOPIC_STATUS, &pubmsg, &token);
         MQTTClient_waitForCompletion(client, token, TIMEOUT);
