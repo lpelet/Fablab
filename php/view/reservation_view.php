@@ -20,8 +20,8 @@ function html_reservation($data = [])
                     </br>
                     <label for="machine">Choisissez une machine :</label>
                     <select id="nom" name="machine" required>
-                        <option value="2">Imprimante 3D</option>
-                        <option value="3">Découpe laser</option>
+                        <option value="3">Imprimante 3D</option>
+                        <option value="5">Découpe laser</option>
                     </select>
             
                     <input type="submit" value="Réserver">

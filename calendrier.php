@@ -4,13 +4,12 @@ require_once("php/view/generic_view.php");
 require_once("php/view/planning_view.php");
 require_once("php/modele/session_modele.php");
 require_once("php/modele/reservations_modele.php");
-require_once("/var/www/getPost.php");
+require_once("/var/www/fablab/getPost.php");
 
 
 $db = null;
 open_database();
 
-close_database();
 
 $titre_page = "FABLAB - Planning";
 
@@ -34,10 +33,11 @@ if (check_login()) {
     if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
         $aRequest = getPost();
         
-        $reservation['id_reservation'] = $_POST['id'];
-        $reservation['date_debut'] = $_POST['start'];
-        $reservation['date_fin'] = $_POST['end'];
+        $reservation['id_reservation'] = $aRequest['id'];
+        $reservation['date_debut'] = $aRequest['start'];
+        $reservation['date_fin'] = $aRequest['end'];
 
+//        $data['modif'] = reservations_modif($reservation);
         $data['modif'] = reservations_modification($reservation);
 
         // Préparer et retourner la réponse
@@ -55,4 +55,4 @@ if (check_login()) {
     header("Location: connexion.php");
 }
 
-?>
+close_database();

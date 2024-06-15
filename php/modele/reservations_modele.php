@@ -7,7 +7,7 @@ define("SQL_RESERVATIONS_INDEX", "
         r.DateHeureDebut,
         r.DateHeureFin,
         m.nom
-    FROM `Reservations` r
+    FROM Reservations r
     JOIN machines m 
         ON r.id_machine = m.id_machine
     WHERE 
@@ -28,9 +28,8 @@ define("SQL_RESERVATIONS_DELETE", "
 
 define("SQL_RESERVATIONS_UPDATE", "
     UPDATE Reservations SET
-    ID_Reservation = :id,
     DateHeureDebut = :date_debut,
-    DateHeureFin = :date_fin,
+    DateHeureFin = :date_fin
     WHERE ID_Reservation = :id;
 ");
 
@@ -75,22 +74,54 @@ function reservations_delete($id)
     return $statut_requete;    
 }
 
-/*
-$reservation['id_reservation'] = $_POST['id'];
-$reservation['date_debut'] = $_POST['start'];
-$reservation['date_fin'] = $_POST['end'];
-*/
 // Fonction pour modifier une réservation
+function reservations_modif($reservation)
+{
+    global $db;
+
+//    $dateHeureFinMySQL = date('Y-m-d H:i:s', strtotime($reservation['date_fin']));
+//    $dateHeureDebutMySQL = date('Y-m-d H:i:s', strtotime($reservation['date_debut']));
+    $dateHeureFinMySQL = $reservation['date_fin'];
+    $dateHeureDebutMySQL = $reservation['date_debut'];
+
+    $sql = "UPDATE Reservations
+            SET DateHeuredebut = '$dateHeureDebutMySQL',
+                DateHeureFin = '$dateHeureFinMySQL'
+            WHERE ID_Reservation = " . $reservation['id_reservation'];
+
+    print($sql);
+
+    $stmt = $db->prepare($sql);
+
+    $statut_requete = $stmt->execute();
+
+    return $statut_requete;
+}
+
+/*
+define("SQL_RESERVATIONS_UPDATE", "
+    UPDATE Reservations SET
+    DateHeureDebut = :date_debut,
+    DateHeureFin = :date_fin
+    WHERE ID_Reservation = :id;
+");
+*/
+
+
 function reservations_modification($reservation)
 {
     global $db;
 
+    $dateHeureDebutMySQL = date('Y-m-d H:i:s', strtotime($reservation['date_debut']));
+    $dateHeureFinMySQL = date('Y-m-d H:i:s', strtotime($reservation['date_fin']));
+
     $stmt = $db->prepare(SQL_RESERVATIONS_UPDATE);
-    $stmt->bindParam(':id_reservation', $reservation['id'], PDO::PARAM_INT);
-    $stmt->bindParam(':date_debut', $reservation['start'], PDO::PARAM_INT);
-    $stmt->bindParam(':date_fin', $reservation['end'], PDO::PARAM_INT);
+    $stmt->bindParam(':id', $reservation['id_reservation'], PDO::PARAM_INT);
+    $stmt->bindParam(':date_debut', $dateHeureDebutMySQL, PDO::PARAM_STR);
+    $stmt->bindParam(':date_fin', $dateHeureFinMySQL, PDO::PARAM_STR);
 
     $statut_requete = $stmt->execute();
 
     return $statut_requete;    
 }
+    

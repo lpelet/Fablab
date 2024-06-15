@@ -1,8 +1,8 @@
 <?php
 
-require_once("/var/www/php/sql/database.php");
-require_once("/var/www/php/modele/reservations_modele.php");
-require_once("/var/www/getPost.php");
+require_once("/var/www/fablab/php/sql/database.php");
+require_once("/var/www/fablab/php/modele/reservations_modele.php");
+require_once("/var/www/fablab/getPost.php");
 
 $db = null;
 

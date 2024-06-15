@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  },
 	  editable: true,
 	  dayMaxEvents: true,
-	  events: 'http://163.5.143.216/reservation_api.php',
+	  events: 'http://172.31.66.65/reservation_api.php',
 	  droppable: true,
 	  eventClick: function(info) {
 		if (confirm("Voulez-vous supprimer cette machine ?")) {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	  // Requête AJAX pour supprimer l'événement sur le serveur
 	  $.ajax({
-		url: 'http://163.5.143.216/reservation_api.php',
+		url: 'http://172.31.66.65/reservation_api.php',
 		type: 'DELETE',
 		contentType: 'application/json',
 		data: JSON.stringify(eventData),
@@ -95,9 +95,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Faire une requête AJAX pour mettre à jour l'événement sur le serveur
 	$.ajax({
-		url: 'http://163.5.143.216/calendrier.php',
+		url: 'http://172.31.66.65/calendrier.php',
 		type: 'PUT',
 		dataType: 'json',
+		contentType: 'application/json',
 		data: JSON.stringify(eventData),
 		async: false,
 		success: function(response) {
