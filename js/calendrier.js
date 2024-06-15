@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		async: false,
 		success: function(response) {
 		  console.log('Événement mis à jour avec succès sur le serveur:', response);
+		  location.reload();
 		},
 		error: function(xhr, status, error) {
 		  console.error('Erreur lors de la mise à jour de l\'événement sur le serveur:', error);
